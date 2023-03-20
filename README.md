@@ -29,7 +29,7 @@ String _helloWorld = 'Hello World';
 
 /// This function returns a 'Hello World' string.
 String helloWorld() {
-  return print(_helloWorld)
+  return print(_helloWorld);
 }
 ```
 
@@ -81,9 +81,9 @@ static const double _maxCount = 10;
 /// checks count
 bool checkCount(int _count){
     if(_count > _maxCount){
-        return false
+        return false;
     }
-    return true
+    return true;
 }
 
 /// gets max count
@@ -99,9 +99,9 @@ int getMaxCount(){
 /// checks count
 bool checkCount(){
     if(_count > 10){
-        return false
+        return false;
     }
-    return true
+    return true;
 }
 
 /// gets max count
