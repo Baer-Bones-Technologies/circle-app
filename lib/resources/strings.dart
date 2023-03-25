@@ -11,6 +11,9 @@ const String emailLabel = 'Email';
 const String passwordLabel = 'Password';
 const String confirmPasswordLabel = 'Confirm Password';
 
+/// Hint Strings
+const String emailHint = 'circle.user@circle.com';
+
 
 /// Error Strings
 const String noUserError = 'No user found for that email.';

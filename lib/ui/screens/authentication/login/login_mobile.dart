@@ -8,6 +8,7 @@ import 'package:circle/utility/auth_handler.dart';
 import 'package:circle/utility/security/password.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginMobile extends StatefulWidget {
   const LoginMobile({Key? key}) : super(key: key);
@@ -17,7 +18,6 @@ class LoginMobile extends StatefulWidget {
 }
 
 class _LoginMobileState extends State<LoginMobile> {
-
   @override
   Widget build(BuildContext context) {
     TextInputType inputType = TextInputType.emailAddress;
@@ -65,11 +65,21 @@ class _LoginMobileState extends State<LoginMobile> {
                   ),
                   const SizedBox(height: 20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      TextButton(
+                          onPressed: () => context.go('/registration'),
+                          child: const Text(
+                            'Register for Circle',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                      const SizedBox(width: 100),
                       PrimaryButton(
                         onPressed: () {
-                          if (emailController.value.text.isNotEmpty && pass != null) {
+                          if (emailController.value.text.isNotEmpty &&
+                              pass != null) {
                             AuthenticationHandler().signInWithEmailAndPassword(
                                 emailController.value.text, pass!);
                             if (kDebugMode) {
