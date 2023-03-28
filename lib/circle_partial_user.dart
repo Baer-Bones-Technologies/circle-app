@@ -4,9 +4,6 @@ class CirclePartialUser {
   final String photoUrl;
   final int dateOfBirth;
 
-  static final DateTime _defaultDate = DateTime(
-      DateTime.now().year - 18, DateTime.now().month, DateTime.now().day);
-
   CirclePartialUser({
     this.dateOfBirth = 0,
     required this.uid,

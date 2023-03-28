@@ -6,8 +6,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp().whenComplete(() =>
       runApp(MaterialApp.router(
-        routerConfig: router,
-      ))
+           routerConfig: router,
+         ))
   );
-
 }

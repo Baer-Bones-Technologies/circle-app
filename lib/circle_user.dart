@@ -9,9 +9,10 @@ class CircleUser {
   final String bio;
   final String location;
   final int dateOfBirth;
-  final List<CirclePartialUser> friends;
-  final List<CirclePartialUser> friendRequests;
-  final List<CirclePartialUser> friendRequestsSent;
+  final List<CirclePartialUser> followers;
+  final List<CirclePartialUser> followed;
+  final List<CirclePartialUser> followRequestsSent;
+  final List<CirclePartialUser> followRequestsReceived;
   final List<CirclePartialUser> blockedUsers;
 
   CircleUser({
@@ -23,9 +24,10 @@ class CircleUser {
     this.bio = "",
     this.location = "",
     this.dateOfBirth = 0,
-    this.friends = const [],
-    this.friendRequests = const [],
-    this.friendRequestsSent = const [],
+    this.followers = const [],
+    this.followed = const [],
+    this.followRequestsReceived = const [],
+    this.followRequestsSent = const [],
     this.blockedUsers = const [],
   });
 
@@ -39,10 +41,12 @@ class CircleUser {
       'bio': bio,
       'location': location,
       'dateOfBirth': dateOfBirth,
-      'friends': friends.map((e) => e.toFirebase()).toList(),
-      'friendRequests': friendRequests.map((e) => e.toFirebase()).toList(),
-      'friendRequestsSent':
-          friendRequestsSent.map((e) => e.toFirebase()).toList(),
+      'followers': followers.map((e) => e.toFirebase()).toList(),
+      'followed': followed.map((e) => e.toFirebase()).toList(),
+      'followRequestsSent':
+          followRequestsSent.map((e) => e.toFirebase()).toList(),
+      'followRequestsReceived':
+          followRequestsReceived.map((e) => e.toFirebase()).toList(),
       'blockedUsers': blockedUsers.map((e) => e.toFirebase()).toList(),
     };
   }
@@ -56,15 +60,19 @@ class CircleUser {
         bio = data['bio'],
         location = data['location'],
         dateOfBirth = data['dateOfBirth'],
-        friends = (data['friends'] as List<dynamic>)
+        followers = (data['followers'] as List<dynamic>)
             .map((e) => CirclePartialUser.fromFirebase(e))
             .toList(),
-        friendRequests = (data['friendRequests'] as List<dynamic>)
+        followed = (data['followed'] as List<dynamic>)
             .map((e) => CirclePartialUser.fromFirebase(e))
             .toList(),
-        friendRequestsSent = (data['friendRequestsSent'] as List<dynamic>)
+        followRequestsSent = (data['followRequestsSent'] as List<dynamic>)
             .map((e) => CirclePartialUser.fromFirebase(e))
             .toList(),
+        followRequestsReceived =
+            (data['followRequestsReceived'] as List<dynamic>)
+                .map((e) => CirclePartialUser.fromFirebase(e))
+                .toList(),
         blockedUsers = (data['blockedUsers'] as List<dynamic>)
             .map((e) => CirclePartialUser.fromFirebase(e))
             .toList();
