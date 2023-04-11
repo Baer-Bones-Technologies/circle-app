@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'circle_partial_user.dart';
 
 class CircleUser {
@@ -76,4 +78,10 @@ class CircleUser {
         blockedUsers = (data['blockedUsers'] as List<dynamic>)
             .map((e) => CirclePartialUser.fromFirebase(e))
             .toList();
+
+  Widget circleUserProfileImage(){
+    return CircleAvatar(
+
+    );
+  }
 }
