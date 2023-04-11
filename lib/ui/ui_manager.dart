@@ -39,7 +39,12 @@ class UIManager {
   /// Example: 0.75 = 75% of the screen width
 
   double getMaxWidth({double width = _defaultWidth}) {
-    return getScreenWidth() * width;
+    double tempWidth = width;
+    if(tempWidth > 1){
+      tempWidth = 1;
+    }
+    tempWidth = getScreenWidth() * tempWidth;
+    return tempWidth;
   }
 
   /// This function is used to get return the desired screen height for a widget
@@ -53,7 +58,12 @@ class UIManager {
   /// 0.75 = 75% of the screen height,
 
   double getMaxHeight({double height = _defaultHeight}) {
-    return getScreenHeight() * height;
+    double tempHeight = height;
+    if(tempHeight > 1){
+      tempHeight = 1;
+    }
+    tempHeight = getScreenHeight() * tempHeight;
+    return tempHeight;
   }
 
   /// This function returns the current platform the app is running on

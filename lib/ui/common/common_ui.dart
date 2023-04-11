@@ -2,7 +2,6 @@ import 'package:circle/resources/strings.dart';
 import 'package:circle/resources/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 /// This is the circle Logo
 class Logo extends StatelessWidget {
   const Logo({Key? key}) : super(key: key);
