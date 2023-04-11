@@ -1,19 +1,19 @@
 import 'circle_partial_user.dart';
 
 class CircleUser {
-  final String uid;
-  final String email;
-  final String displayName;
-  final String photoUrl;
-  final String phoneNumber;
-  final String bio;
-  final String location;
-  final int dateOfBirth;
-  final List<CirclePartialUser> followers;
-  final List<CirclePartialUser> followed;
-  final List<CirclePartialUser> followRequestsSent;
-  final List<CirclePartialUser> followRequestsReceived;
-  final List<CirclePartialUser> blockedUsers;
+  String uid;
+  String email;
+  String displayName;
+  String photoUrl;
+  String phoneNumber;
+  String bio;
+  String location;
+  int dateOfBirth;
+  List<CirclePartialUser> followers;
+  List<CirclePartialUser> followed;
+  List<CirclePartialUser> followRequestsSent;
+  List<CirclePartialUser> followRequestsReceived;
+  List<CirclePartialUser> blockedUsers;
 
   CircleUser({
     required this.uid,

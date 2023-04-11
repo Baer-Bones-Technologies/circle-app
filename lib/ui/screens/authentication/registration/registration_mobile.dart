@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:circle/circle_user.dart';
 import 'package:circle/resources/constants.dart';
 import 'package:circle/resources/strings.dart';
 import 'package:circle/resources/theme.dart';
@@ -7,6 +8,7 @@ import 'package:circle/ui/common/common_ui.dart';
 import 'package:circle/ui/ui_manager.dart';
 import 'package:circle/utility/account_manager.dart';
 import 'package:circle/utility/auth_handler.dart';
+import 'package:circle/utility/security/password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,7 @@ ButtonState nextButtonState = ButtonState.disabled;
 class RegistrationMobile extends StatefulWidget {
   RegistrationMobile({Key? key}) : super(key: key);
 
-  RegistrationState registrationState = RegistrationState.user;
+  RegistrationState registrationState = RegistrationState.admin;
   DateTime dateOfBirth = defaultBirthDate;
 
   final emailTextController = TextEditingController();
@@ -24,23 +26,27 @@ class RegistrationMobile extends StatefulWidget {
   final firstNameTextController = TextEditingController();
   final lastNameTextController = TextEditingController();
   final usernameTextController = TextEditingController();
-  final isUsernameAvailable = ValueNotifier<UsernameAvailability>(UsernameAvailability.unknown);
+  final isUsernameAvailable =
+      ValueNotifier<UsernameAvailability>(UsernameAvailability.unknown);
   final nextButtonStatesController = MaterialStatesController();
   final _registrationComplete = Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: const [
-      Text(
-        'Please enter your email address',
-        style: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
-      ),
-      SingleLineInput(
-        label: emailLabel,
-        hintText: emailHint,
-      )
-    ],
-  );
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(Icons.check_circle_outline,
+              size: 100, color: CircleTheme.secondary),
+          const SizedBox(height: 20),
+          const Text(
+            registrationCompleteLabel,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+        ]),
+      ]);
+  CircleUser? user;
 
   bool checkTextFormat(TextEditingController controller, TextFormat format) {
     switch (format) {
@@ -49,7 +55,7 @@ class RegistrationMobile extends StatefulWidget {
         return emailRegex.hasMatch(controller.text);
       case TextFormat.password:
         RegExp passwordRegex =
-        RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$');
+            RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$');
         return passwordRegex.hasMatch(controller.text);
       case TextFormat.username:
         RegExp usernameRegex = RegExp(r'^[a-zA-Z0-9_]{3,15}$');
@@ -73,12 +79,13 @@ class RegistrationMobile extends StatefulWidget {
             checkTextFormat(passwordTextController, TextFormat.password);
         break;
       case RegistrationState.user:
-        checksOut = isUsernameAvailable.value == UsernameAvailability.available &&
-            usernameTextController.text.isNotEmpty;
+        checksOut =
+            isUsernameAvailable.value == UsernameAvailability.available &&
+                usernameTextController.text.isNotEmpty;
         break;
-        case RegistrationState.registrationComplete:
-          checksOut = true;
-          break;
+      case RegistrationState.registrationComplete:
+        checksOut = true;
+        break;
     }
 
     log('Is button ready? $checksOut');
@@ -90,7 +97,6 @@ class RegistrationMobile extends StatefulWidget {
 }
 
 class _RegistrationMobileState extends State<RegistrationMobile> {
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -101,23 +107,26 @@ class _RegistrationMobileState extends State<RegistrationMobile> {
     if (picked != null && picked != DateTime.now()) {
       setState(() {
         widget.dateOfBirth = picked;
-        nextButtonState = AuthenticationHandler().isUserOldEnough(widget.dateOfBirth)
-            ? ButtonState.enabled
-            : ButtonState.disabled;
+        nextButtonState =
+            AuthenticationHandler().isUserOldEnough(widget.dateOfBirth)
+                ? ButtonState.enabled
+                : ButtonState.disabled;
         log('Is button enabled? $nextButtonState');
       });
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
+    AuthenticationHandler auth = AuthenticationHandler();
+    AccountManager accountManager = AccountManager(auth.getAuthInstance());
     return Scaffold(
         backgroundColor: CircleTheme.primary,
         floatingActionButton: PrimaryButton(
-          text: widget.registrationState == RegistrationState.registrationComplete
-              ? 'Complete'
-              : 'Next',
+          text:
+              widget.registrationState == RegistrationState.registrationComplete
+                  ? 'Complete'
+                  : 'Next',
           width: 75,
           height: 50,
           onPressed: () {
@@ -126,13 +135,45 @@ class _RegistrationMobileState extends State<RegistrationMobile> {
                 switch (widget.registrationState) {
                   case RegistrationState.admin:
                     // TODO: Create account on Firebase Auth
-                    if (widget.isButtonReady()) {
-                      widget.registrationState = RegistrationState.user;
-                    }
+                    Password password =
+                        Password(widget.passwordTextController.text);
+                    String email = widget.emailTextController.text;
+                    auth.createUserWithEmailAndPassword(email, password).then(
+                        (value) {
+                      widget.user = value;
+                      if (widget.user != null) {
+                        log('User created: ${widget.user!.uid}');
+                        if (widget.user != null) {
+                          setState(() {
+                            widget.registrationState = RegistrationState.user;
+                          });
+                        } else if (widget.user == null) {
+                          throw Exception('Error creating user');
+                        }
+                      }
+                    }, onError: (error) {
+                      log('Error creating user: $error');
+                    });
+
                     break;
                   case RegistrationState.user:
                     // TODO: Create user account on Firebase Firestore
-                    widget.registrationState = RegistrationState.registrationComplete;
+                    widget.user!.displayName =
+                        widget.usernameTextController.text;
+                    try {
+                      accountManager.updateUser(widget.user!);
+                    } catch (e) {
+                      log('Error creating user: $e');
+                      if (e is FirebaseAuthException) {
+                        log('Error code: ${e.code}');
+                      }
+                    }
+                    if (widget.user != null) {
+                      setState(() {
+                        widget.registrationState =
+                            RegistrationState.registrationComplete;
+                      });
+                    }
                     break;
                   case RegistrationState.registrationComplete:
                     break;
@@ -150,13 +191,15 @@ class _RegistrationMobileState extends State<RegistrationMobile> {
                         text:
                             '${widget.dateOfBirth.month}/${widget.dateOfBirth.day}/${widget.dateOfBirth.year}'),
                     confirmPasswordTextController:
-                    widget.confirmPasswordTextController,
+                        widget.confirmPasswordTextController,
                     dateSelection: () => {_selectDate(context)},
                     dateOfBirth: widget.dateOfBirth,
                     enabled: nextButtonState == ButtonState.enabled)
                 : widget.registrationState == RegistrationState.user
                     ? UserRegistration(
-                        usernameTextController: widget.usernameTextController, isUsernameAvailable: widget.isUsernameAvailable,)
+                        usernameTextController: widget.usernameTextController,
+                        isUsernameAvailable: widget.isUsernameAvailable,
+                      )
                     : widget._registrationComplete));
   }
 }
@@ -186,8 +229,6 @@ class AdminRegistration extends StatefulWidget {
 }
 
 class _AdminRegistrationState extends State<AdminRegistration> {
-
-
   @override
   Widget build(BuildContext context) {
     final ui = UIManager(context);
@@ -287,28 +328,33 @@ class _AdminRegistrationState extends State<AdminRegistration> {
   }
 }
 
-
 class UserRegistration extends StatefulWidget {
-  UserRegistration({Key? key, required this.usernameTextController, required this.isUsernameAvailable})
+  UserRegistration(
+      {Key? key,
+      required this.usernameTextController,
+      required this.isUsernameAvailable})
       : super(key: key);
 
   final TextEditingController usernameTextController;
   ValueNotifier<UsernameAvailability>? isUsernameAvailable;
   Color _isUsernameAvailableColor = Colors.white;
 
-
-
-
   @override
   State<UserRegistration> createState() => _UserRegistrationState();
 }
 
 class _UserRegistrationState extends State<UserRegistration> {
-
-  void isUsernameAvailable(){
-    AccountManager(FirebaseAuth.instance).checkUsernameAvailability(widget.usernameTextController.text).then((value) {
-        widget.isUsernameAvailable?.value = value ? UsernameAvailability.available : UsernameAvailability.unavailable;
-        widget._isUsernameAvailableColor = widget.isUsernameAvailable?.value == UsernameAvailability.available ? Colors.green : Colors.red;
+  void isUsernameAvailable() {
+    AccountManager(FirebaseAuth.instance)
+        .checkUsernameAvailability(widget.usernameTextController.text)
+        .then((value) {
+      widget.isUsernameAvailable?.value = value
+          ? UsernameAvailability.available
+          : UsernameAvailability.unavailable;
+      widget._isUsernameAvailableColor =
+          widget.isUsernameAvailable?.value == UsernameAvailability.available
+              ? Colors.green
+              : Colors.red;
     });
   }
 
@@ -330,12 +376,17 @@ class _UserRegistrationState extends State<UserRegistration> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('@', style: TextStyle(fontSize: 24, color: widget._isUsernameAvailableColor), textAlign: TextAlign.center,),
+              Text(
+                '@',
+                style: TextStyle(
+                    fontSize: 24, color: widget._isUsernameAvailableColor),
+                textAlign: TextAlign.center,
+              ),
               SingleLineInput(
                 label: usernameLabel,
                 hintText: usernameHint,
                 controller: widget.usernameTextController,
-                onChanged: (value){
+                onChanged: (value) {
                   setState(() {
                     isUsernameAvailable();
                   });

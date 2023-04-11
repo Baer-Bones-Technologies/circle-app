@@ -58,6 +58,11 @@ class AuthenticationHandler {
     });
   }
 
+  /// function returns firebase auth instance
+  FirebaseAuth getAuthInstance() {
+    return _auth;
+  }
+
   /// This function is used to sign in a user with email and password
   /// and receive user data in return if successful.
   ///
@@ -111,9 +116,8 @@ class AuthenticationHandler {
       final credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password.value);
       credential.user!.sendEmailVerification();
-      _accountManager.createUser(
-          _accountManager.getUser(credential.user!.uid) as CircleUser);
-      return _accountManager.getUser(credential.user!.uid) as CircleUser?;
+      _accountManager.createUser(CircleUser(uid: credential.user!.uid));
+      return _accountManager.getUser(credential.user!.uid);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw Exception(res.passwordWeakError);

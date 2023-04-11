@@ -12,6 +12,7 @@ const String passwordLabel = 'Password';
 const String confirmPasswordLabel = 'Confirm Password';
 const String dateOfBirthLabel = 'Date of Birth';
 const String usernameLabel = 'Username';
+const String registrationCompleteLabel = 'Registration Complete';
 
 /// Hint Strings
 const String emailHint = 'circle.user@circle.com';

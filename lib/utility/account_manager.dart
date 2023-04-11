@@ -34,4 +34,10 @@ class AccountManager {
     QuerySnapshot users = await _database.collection('users').where('username', isEqualTo: username).get();
     return users.docs.isEmpty;
   }
+
+  /// This function is used to update a user in the database
+  void updateUser(CircleUser user) {
+    _database.collection('users').doc(_auth.currentUser?.uid).update(
+        user.toFirebase());
+  }
 }
