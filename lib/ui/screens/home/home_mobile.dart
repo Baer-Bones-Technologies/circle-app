@@ -23,9 +23,6 @@ class _HomeMobileState extends State<HomeMobile> {
     UIManager ui = UIManager(context);
 
 
-    return ui.checkPlatform(
-        authState: authState,
-        mobile: const HomeMobile(),
-        loggedOutFallbackMobile: const LoginMobile());
+    return const Placeholder();
   }
 }

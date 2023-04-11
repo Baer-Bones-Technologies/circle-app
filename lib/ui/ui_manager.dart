@@ -15,7 +15,6 @@ class UIManager {
 
   Platform _platform = Platform.unknown;
 
-
   /// This function returns the current screen size
   Size getScreenSize() {
     return MediaQuery.of(_context).size;
@@ -77,11 +76,21 @@ class UIManager {
   }
 
   /// function that checks which platform and returns widget accordingly
-  Widget checkPlatform(
+  Widget checkPlatform({Widget? web, Widget? mobile}) {
+    return checkPlatformVerbose(
+        web: web,
+        mobile: mobile,
+        loggedOutFallbackMobile: mobile,
+        loggedOutFallbackWeb: web,
+        authState: AuthenticationHandler().getAuthenticationState());
+  }
+
+  /// function that checks which platform and returns widget accordingly
+  Widget checkPlatformVerbose(
       {Widget? web,
-      mobile,
-      loggedOutFallbackMobile,
-      loggedOutFallbackWeb,
+      Widget? mobile,
+      Widget? loggedOutFallbackMobile,
+      Widget? loggedOutFallbackWeb,
       required AuthState authState}) {
     _platform = getPlatform();
     switch (authState) {
@@ -91,7 +100,8 @@ class UIManager {
             return web ?? const Placeholder(child: Text(impossibleScreenError));
           case Platform.android:
           case Platform.ios:
-            return mobile ?? const Placeholder(child: Text(impossibleScreenError));
+            return mobile ??
+                const Placeholder(child: Text(impossibleScreenError));
           case Platform.unknown:
             return const Placeholder(child: Text(unsupportedPlatformError));
         }
@@ -99,10 +109,14 @@ class UIManager {
       case AuthState.loggedOut:
         switch (_platform) {
           case Platform.web:
-            return loggedOutFallbackWeb ?? web ?? const Placeholder(child: Text(impossibleScreenError));
+            return loggedOutFallbackWeb ??
+                web ??
+                const Placeholder(child: Text(impossibleScreenError));
           case Platform.android:
           case Platform.ios:
-            return loggedOutFallbackMobile ?? mobile ?? const Placeholder(child: Text(impossibleScreenError));
+            return loggedOutFallbackMobile ??
+                mobile ??
+                const Placeholder(child: Text(impossibleScreenError));
           case Platform.unknown:
             return const Placeholder(child: Text(unsupportedPlatformError));
         }

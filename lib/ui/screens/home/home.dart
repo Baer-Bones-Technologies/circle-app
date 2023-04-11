@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
 
     final UIManager ui = UIManager(context);
 
-    Widget home = ui.checkPlatform(
+    Widget home = ui.checkPlatformVerbose(
         authState: auth.getAuthenticationState(),
         web: const HomeWeb(),
         mobile: const HomeMobile(),
