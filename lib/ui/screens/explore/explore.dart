@@ -1,4 +1,7 @@
+import 'package:circle/navigation/mobile_navigation/navbar.dart';
+import 'package:circle/resources/constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
@@ -10,6 +13,15 @@ class Explore extends StatefulWidget {
 class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: SafeArea(child: SingleChildScrollView(
+        child: Column(
+          children: const [
+            Text('This is the Explore Screen')
+          ],
+        ),
+      )),
+      bottomNavigationBar: navbar,
+    );
   }
 }

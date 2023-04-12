@@ -23,7 +23,10 @@ class _LoginMobileState extends State<LoginMobile> {
     TextEditingController emailController = TextEditingController(text: "");
     TextEditingController passwordController = TextEditingController(text: "");
     Size screen = UIManager(context).getScreenSize();
+    ValueNotifier<bool> isError = ValueNotifier(false);
+    ValueNotifier<String> errorMessage = ValueNotifier("");
     Password? pass;
+
     return Scaffold(
         backgroundColor: CircleTheme.primary,
         body: SingleChildScrollView(
@@ -45,6 +48,10 @@ class _LoginMobileState extends State<LoginMobile> {
                             fontSize: 40),
                         textAlign: TextAlign.start),
                     const SizedBox(height: 20),
+                    Visibility(
+                        visible: isError.value,
+                        child: Text(errorMessage.value,
+                            style: const TextStyle(color: Colors.redAccent))),
                     SingleLineInput(
                       controller: emailController,
                       keyboardType: inputType,
@@ -79,14 +86,27 @@ class _LoginMobileState extends State<LoginMobile> {
                           onPressed: () {
                             if (emailController.value.text.isNotEmpty &&
                                 pass != null) {
-                              AuthenticationHandler().signInWithEmailAndPassword(
-                                  emailController.value.text, pass!);
+                              AuthenticationHandler()
+                                  .signInWithEmailAndPassword(
+                                      emailController.value.text, pass!)
+                                  .then((value) {
+                                if (value != null) {
+                                  context.go('/');
+                                } else {
+                                  isError.value = true;
+                                  errorMessage.value = noUserError;
+                                }
+                              }).catchError((error){
+                                isError.value = true;
+                                errorMessage.value = error.message;
+                              });
                               if (kDebugMode) {
                                 print("${emailController.text} logging in");
                               }
                             } else {
                               if (kDebugMode) {
-                                print("input value empty");
+                                isError.value = true;
+                                errorMessage.value = "input value empty";
                               }
                             }
                           },

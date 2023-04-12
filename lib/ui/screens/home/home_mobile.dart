@@ -1,3 +1,4 @@
+import 'package:circle/resources/constants.dart';
 import 'package:circle/ui/ui_manager.dart';
 import 'package:circle/utility/auth_handler.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +26,15 @@ class _HomeMobileState extends State<HomeMobile> {
   Widget build(BuildContext context) {
     UIManager ui = UIManager(context);
 
-    return const Scaffold(
-      body: SafeArea(child: Placeholder()),
-      bottomNavigationBar: BottomNavbar(),
+    return Scaffold(
+      body: SafeArea(child: SingleChildScrollView(
+        child: Column(
+          children: const [
+            Text('This is the Home Screen')
+          ],
+        ),
+      )),
+      bottomNavigationBar: navbar,
     );
   }
 }
