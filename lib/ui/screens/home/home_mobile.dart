@@ -1,6 +1,8 @@
 import 'package:circle/resources/constants.dart';
 import 'package:circle/resources/theme.dart';
 import 'package:circle/ui/common/common_ui.dart';
+import 'package:circle/ui/ui_manager.dart';
+import 'package:circle/utility/auth_handler.dart';
 import 'package:flutter/material.dart';
 
 /// This class is the stateful widget for the Main Home Feed Screen for Mobile.
