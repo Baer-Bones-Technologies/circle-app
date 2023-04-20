@@ -1,7 +1,10 @@
 import 'package:circle/resources/strings.dart';
 import 'package:circle/resources/theme.dart';
+import 'package:circle/ui/ui_manager.dart';
+import 'package:circle/utility/account_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 /// This is the circle Logo
 class Logo extends StatelessWidget {
   const Logo({Key? key}) : super(key: key);
@@ -18,7 +21,7 @@ class Logo extends StatelessWidget {
         child: Center(
           child: Text(appTitle,
               style: TextStyle(
-                color: CircleTheme.primary,
+                color: CircleTheme.primary.value,
                 fontSize: 30,
               )),
         ));
@@ -79,8 +82,8 @@ class SingleLineInput extends StatelessWidget {
         children: [
           Visibility(
               visible: errorThrown,
-              child: Text(errorText,
-                  style: const TextStyle(color: Colors.red))),
+              child:
+                  Text(errorText, style: const TextStyle(color: Colors.red))),
           TextField(
             controller: controller,
             focusNode: focusNode,
@@ -89,7 +92,7 @@ class SingleLineInput extends StatelessWidget {
             autocorrect: false,
             enableSuggestions: true,
             maxLines: 1,
-            cursorColor: CircleTheme.primaryGradientColor,
+            cursorColor: CircleTheme.primaryGradientColor.value,
             textAlign: TextAlign.start,
             onChanged: onChanged,
             onSubmitted: onSubmitted,
@@ -97,27 +100,27 @@ class SingleLineInput extends StatelessWidget {
             enabled: enabled,
             readOnly: readOnly,
             inputFormatters: inputFormatters,
-            style: TextStyle(color: CircleTheme.secondary),
+            style: TextStyle(color: CircleTheme.secondary.value),
             obscureText: obscureText,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: CircleTheme.secondaryGradientColor, width: 1),
+                    color: CircleTheme.secondaryGradientColor.value, width: 1),
                 borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: CircleTheme.primaryGradientColor, width: 1),
+                    color: CircleTheme.primaryGradientColor.value, width: 1),
                 borderRadius: BorderRadius.circular(8),
               ),
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: CircleTheme.secondary, width: 1),
+                borderSide: BorderSide(color: CircleTheme.secondary.value, width: 1),
                 borderRadius: BorderRadius.circular(8),
               ),
               labelText: label,
-              labelStyle: TextStyle(color: CircleTheme.secondary),
+              labelStyle: TextStyle(color: CircleTheme.secondary.value),
               hintText: hintText,
-              hintStyle: TextStyle(color: CircleTheme.secondary),
+              hintStyle: TextStyle(color: CircleTheme.secondary.value),
             ),
             textCapitalization: textCapitalization,
           ),
@@ -152,8 +155,6 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return SizedBox(
       height: height,
       width: width,
@@ -161,7 +162,7 @@ class PrimaryButton extends StatelessWidget {
           onPressed: onPressed,
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(
-                  CircleTheme.secondaryGradientColor),
+                  CircleTheme.secondaryGradientColor.value),
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               elevation: MaterialStateProperty.all(elevation),
               padding: MaterialStateProperty.all(EdgeInsets.all(padding)),
@@ -169,7 +170,7 @@ class PrimaryButton extends StatelessWidget {
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(borderRadius),
                       side: BorderSide(
-                          color: CircleTheme.secondaryGradientColor)))),
+                          color: CircleTheme.secondaryGradientColor.value)))),
           child: Text(text)),
     );
   }
@@ -235,8 +236,8 @@ class LabelTextInput extends StatelessWidget {
         children: [
           Visibility(
               visible: errorThrown,
-              child: Text(errorText,
-                  style: const TextStyle(color: Colors.red))),
+              child:
+                  Text(errorText, style: const TextStyle(color: Colors.red))),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -256,7 +257,7 @@ class LabelTextInput extends StatelessWidget {
             autocorrect: false,
             enableSuggestions: true,
             maxLines: maxLines,
-            cursorColor: CircleTheme.primaryGradientColor,
+            cursorColor: CircleTheme.primaryGradientColor.value,
             textAlign: textAlign,
             onChanged: onChanged,
             onSubmitted: onSubmitted,
@@ -265,26 +266,27 @@ class LabelTextInput extends StatelessWidget {
             readOnly: readOnly,
             onTap: onTap,
             inputFormatters: inputFormatters,
-            style: TextStyle(color: CircleTheme.secondary),
+            style: TextStyle(color: CircleTheme.secondary.value),
             obscureText: obscureText,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: CircleTheme.secondaryGradientColor, width: 1),
+                    color: CircleTheme.secondaryGradientColor.value, width: 1),
                 borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: CircleTheme.primaryGradientColor, width: 1),
+                    color: CircleTheme.primaryGradientColor.value, width: 1),
                 borderRadius: BorderRadius.circular(8),
               ),
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: CircleTheme.secondary, width: 1),
+                borderSide:
+                    BorderSide(color: CircleTheme.secondary.value, width: 1),
                 borderRadius: BorderRadius.circular(8),
               ),
-              labelStyle: TextStyle(color: CircleTheme.secondary),
+              labelStyle: TextStyle(color: CircleTheme.secondary.value),
               hintText: hintText,
-              hintStyle: TextStyle(color: CircleTheme.secondary),
+              hintStyle: TextStyle(color: CircleTheme.secondary.value),
             ),
             textCapitalization: textCapitalization,
           ),
@@ -292,4 +294,19 @@ class LabelTextInput extends StatelessWidget {
       ),
     );
   }
+}
+
+/// This is the top bar used within the mobile app
+PreferredSizeWidget? circleTopAppBar(BuildContext context) {
+  UIManager uiManager = UIManager(context);
+  return PreferredSize(
+      preferredSize: uiManager.topBarSize(),
+      child: SizedBox(
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        AccountManager.user.value?.circleUserProfileImage() ??
+            CircleAvatar(
+              backgroundColor: CircleTheme.primary.value,
+              child: const Icon(Icons.person),
+            ),
+      ])));
 }

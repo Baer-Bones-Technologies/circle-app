@@ -1,4 +1,5 @@
 import 'package:circle/resources/constants.dart';
+import 'package:circle/ui/common/common_ui.dart';
 import 'package:circle/ui/ui_manager.dart';
 import 'package:circle/utility/auth_handler.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _HomeMobileState extends State<HomeMobile> {
     UIManager ui = UIManager(context);
 
     return Scaffold(
+      appBar: circleTopAppBar(context),
       body: SafeArea(child: SingleChildScrollView(
         child: Column(
           children: const [

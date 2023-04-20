@@ -34,7 +34,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
     return Container(
         height: 60,
         width: ui.getMaxWidth(),
-        color: CircleTheme.primary,
+        color: CircleTheme.primary.value,
         child: _navigationBar(ui).value);
   }
 
@@ -60,13 +60,13 @@ class _BottomNavbarState extends State<BottomNavbar> {
                     decoration: BoxDecoration(
                       color: selectedIndex.value ==
                               _widgetOptions.keys.toList().indexOf(icon)
-                          ? CircleTheme.tertiary
-                          : CircleTheme.primary,
+                          ? CircleTheme.tertiary.value
+                          : CircleTheme.primary.value,
                       border: Border(
                         top: BorderSide(
                           color: selectedIndex.value ==
                                   _widgetOptions.keys.toList().indexOf(icon)
-                              ? CircleTheme.primaryGradientColor
+                              ? CircleTheme.primaryGradientColor.value
                               : Colors.transparent,
                           width: 3,
                         ),
@@ -79,7 +79,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                           icon.icon,
                           color: selectedIndex.value ==
                                   _widgetOptions.keys.toList().indexOf(icon)
-                              ? CircleTheme.primaryGradientColor
+                              ? CircleTheme.primaryGradientColor.value
                               : Colors.white,
                         )
                       ],

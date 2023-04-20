@@ -1,14 +1,14 @@
-import 'package:circle/circle_partial_user.dart';
+import 'package:circle/models/circle_partial_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../circle_user.dart';
+import '../models/circle_user.dart';
 
 class AccountManager {
   final FirebaseFirestore _database = FirebaseFirestore.instance;
   final FirebaseAuth _auth;
-  final ValueNotifier<CircleUser?> user = ValueNotifier(null);
+  static final ValueNotifier<CircleUser?> user = ValueNotifier(null);
 
   /// This initializer sets the current user.
   AccountManager(this._auth) {

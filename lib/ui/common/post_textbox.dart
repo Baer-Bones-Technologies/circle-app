@@ -1,4 +1,4 @@
-import 'package:circle/circle_user.dart';
+import 'package:circle/models/circle_user.dart';
 import 'package:circle/utility/account_manager.dart';
 import 'package:circle/utility/auth_handler.dart';
 import 'package:flutter/cupertino.dart';
