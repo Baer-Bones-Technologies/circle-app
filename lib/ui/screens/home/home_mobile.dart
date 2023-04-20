@@ -1,9 +1,7 @@
 import 'package:circle/resources/constants.dart';
-import 'package:circle/ui/ui_manager.dart';
-import 'package:circle/utility/auth_handler.dart';
+import 'package:circle/resources/theme.dart';
+import 'package:circle/ui/common/common_ui.dart';
 import 'package:flutter/material.dart';
-
-import '../../../navigation/mobile_navigation/navbar.dart';
 
 /// This class is the stateful widget for the Main Home Feed Screen for Mobile.
 ///
@@ -19,14 +17,11 @@ class HomeMobile extends StatefulWidget {
 
 class _HomeMobileState extends State<HomeMobile> {
 
-  final AuthState _authState = AuthenticationHandler()
-    .getAuthenticationState();
-
   @override
   Widget build(BuildContext context) {
-    UIManager ui = UIManager(context);
-
     return Scaffold(
+      appBar: circleTopAppBar(context),
+      backgroundColor: CircleTheme.primary.value,
       body: SafeArea(child: SingleChildScrollView(
         child: Column(
           children: const [

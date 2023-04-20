@@ -1,3 +1,4 @@
+import 'package:circle/resources/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'circle_partial_user.dart';
@@ -81,7 +82,9 @@ class CircleUser {
 
   Widget circleUserProfileImage(){
     return CircleAvatar(
-
-    );
+      backgroundColor: CircleTheme.tertiary.value,
+      radius: 50,
+      backgroundImage: NetworkImage(photoUrl),
+      );
   }
 }

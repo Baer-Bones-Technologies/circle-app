@@ -28,7 +28,7 @@ class _LoginMobileState extends State<LoginMobile> {
     Password? pass;
 
     return Scaffold(
-        backgroundColor: CircleTheme.primary,
+        backgroundColor: CircleTheme.primary.value,
         body: SingleChildScrollView(
           child: SizedBox(
             height: screen.height,

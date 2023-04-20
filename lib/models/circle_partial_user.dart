@@ -25,4 +25,19 @@ class CirclePartialUser {
         displayName = data['displayName'],
         photoUrl = data['photoUrl'],
         dateOfBirth = data['dateOfBirth'];
+
+  CirclePartialUser.fromMap(Map<String, dynamic> map)
+      : uid = map['uid'],
+        displayName = map['displayName'],
+        photoUrl = map['photoUrl'],
+        dateOfBirth = map['dateOfBirth'];
+
+  toMap() {
+    return {
+      'uid': uid,
+      'displayName': displayName,
+      'photoUrl': photoUrl,
+      'dateOfBirth': dateOfBirth,
+    };
+  }
 }

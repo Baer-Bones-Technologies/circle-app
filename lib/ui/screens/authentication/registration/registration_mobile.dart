@@ -1,6 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:developer';
 
-import 'package:circle/circle_user.dart';
+import 'package:circle/models/circle_user.dart';
 import 'package:circle/resources/constants.dart';
 import 'package:circle/resources/strings.dart';
 import 'package:circle/resources/theme.dart';
@@ -35,7 +37,7 @@ class RegistrationMobile extends StatefulWidget {
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(Icons.check_circle_outline,
-              size: 100, color: CircleTheme.secondary),
+              size: 100, color: CircleTheme.secondary.value),
           const SizedBox(height: 20),
           const Text(
             registrationCompleteLabel,
@@ -121,7 +123,7 @@ class _RegistrationMobileState extends State<RegistrationMobile> {
     AuthenticationHandler auth = AuthenticationHandler();
     AccountManager accountManager = AccountManager(auth.getAuthInstance());
     return Scaffold(
-        backgroundColor: CircleTheme.primary,
+        backgroundColor: CircleTheme.primary.value,
         floatingActionButton: PrimaryButton(
           text:
               widget.registrationState == RegistrationState.registrationComplete
@@ -134,7 +136,6 @@ class _RegistrationMobileState extends State<RegistrationMobile> {
               if (nextButtonState == ButtonState.enabled) {
                 switch (widget.registrationState) {
                   case RegistrationState.admin:
-                    // TODO: Create account on Firebase Auth
                     Password password =
                         Password(widget.passwordTextController.text);
                     String email = widget.emailTextController.text;
@@ -157,7 +158,6 @@ class _RegistrationMobileState extends State<RegistrationMobile> {
 
                     break;
                   case RegistrationState.user:
-                    // TODO: Create user account on Firebase Firestore
                     widget.user!.displayName =
                         widget.usernameTextController.text;
                     try {

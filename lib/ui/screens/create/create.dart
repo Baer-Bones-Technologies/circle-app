@@ -1,6 +1,4 @@
-import 'package:circle/navigation/mobile_navigation/navbar.dart';
 import 'package:circle/resources/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Create extends StatefulWidget {

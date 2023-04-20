@@ -30,6 +30,10 @@ class UIManager {
     return getScreenSize().height;
   }
 
+  Size topBarSize() {
+    return Size(getScreenWidth(), getMaxHeight(height: 0.1));
+  }
+
   /// This function is used to get return the desired screen width for a widget
   /// to use, will default to max width if no width is provided.
   /// To set the width of the screen pass in a float equivalent to the percentage
@@ -40,7 +44,7 @@ class UIManager {
 
   double getMaxWidth({double width = _defaultWidth}) {
     double tempWidth = width;
-    if(tempWidth > 1){
+    if (tempWidth > 1) {
       tempWidth = 1;
     }
     tempWidth = getScreenWidth() * tempWidth;
@@ -59,7 +63,7 @@ class UIManager {
 
   double getMaxHeight({double height = _defaultHeight}) {
     double tempHeight = height;
-    if(tempHeight > 1){
+    if (tempHeight > 1) {
       tempHeight = 1;
     }
     tempHeight = getScreenHeight() * tempHeight;
